@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarım Gelir Gider Sistemi</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="left">
+            {% if session.get('user_id') %}
+                <span>Hoş Geldiniz, {{ session.username }}</span>
+            {% endif %}
+        </div>
+        <div class="right">
+            {% if session.get('user_id') %}
+                <a href="/logout" class="auth-button">Çıkış Yap</a>
+            {% else %}
+                <a href="/register" class="auth-button">Kayıt Ol</a>
+                <a href="/login" class="auth-button">Giriş Yap</a>
+            {% endif %}
+            <a href="/index" class="auth-button">Anasayfa</a>
+            <button class="auth-button" onclick="goBack()">Geri</button>
+            <script>
+                function goBack() {
+                    if (document.referrer) {
+                        // Bir önceki sayfa varsa geri git
+                        window.history.back();
+                    } else {
+                        // Önceki sayfa yoksa bulunduğun sayfada kal
+                        alert("Geri dönecek bir sayfa yok!");
+                    }
+                }
+            </script>
+        </div>
+    </div>  
+
+    <div class="main-container">
+        <h1>Tarım Gelir Gider Sistemi</h1>
+        <form action="/index">
+        {% if session.get('user_id') %}
+            <p>Merhaba {{ session.username }}, aşağıdaki seçeneklerden birini seçebilirsiniz:</p>
+            <div class="button-container">
+                <a href="/tarla" class="auth-button1">Tarla Menü</a>
+                        <!-- Hızlı Menü Section -->
+                        <div class="menu-container">
+                            <h2>Hızlı Menü</h2>
+                            <div class="quick-add">
+                                <div class="menu-box">
+                                    <h2>Tarla İşlemleri</h2>
+                                    <a href="/tarla_ekle" class="auth-button">Tarla Ekle</a>
+                                    <a href="/hizli_menu_islemler" class="auth-button">Yapılan İşlemler Ekle</a>
+                                </div>
+                                <div class="menu-row">
+                                    <div class="menu-box">
+                                        <h2>Tarla Gelir Ekleme</h2>
+                                        <a href="/hizli_menu_hasat" class="auth-button">Hasat Ekle</a>
+                                        <a href="/hizli_menu_hibe" class="auth-button">Hibe Ekle</a>
+                                        <a href="/hizli_menu_diger_gelir" class="auth-button">Diğer Gelirler Ekle</a>
+                                    </div>
+                                    <div class="menu-box">
+                                        <h2>Tarla Gider Ekleme</h2>
+                                        <div class="button-grid">
+                                            <a href="/hizli_menu_tohum" class="auth-button">Tohum Ekle</a>
+                                            <a href="/hizli_menu_gubre" class="auth-button">Gübre Ekle</a>
+                                            <a href="/hizli_menu_ilac" class="auth-button">İlaç Ekle</a>
+                                            <a href="/hizli_menu_akaryakit" class="auth-button">Akaryakıt Ekle</a>
+                                            <a href="/hizli_menu_elektrik" class="auth-button">Elektrik Ekle</a>
+                                            <a href="/hizli_menu_iscilik" class="auth-button">İşçilik Ekle</a>
+                                            <a href="/hizli_menu_nakliye" class="auth-button">Nakliye Ekle</a>
+                                            <a href="/hizli_menu_kredi" class="auth-button">Kredi Ekle</a>
+                                            <a href="/hizli_menu_sigorta" class="auth-button">Sigorta Ekle</a>
+                                            <a href="/hizli_menu_tarla_kirasi" class="auth-button">Tarla Kirası Ekle</a>
+                                            <a href="/hizli_menu_bicim" class="auth-button">Biçim Ekle</a>
+                                            <a href="/hizli_menu_diger_gider" class="auth-button">Diğer Giderler Ekle</a>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>                        
+            </div>
+        {% else %}
+            <p>Lütfen sistemdeki bilgilerinizi görüntülemek veya yönetmek için giriş yapın.</p>
+        {% endif %}
+    </div>
+    <footer>
+        © 2024 Tarım Gelir Gider Sistemi
+    </footer>    
+</body>
+</html>

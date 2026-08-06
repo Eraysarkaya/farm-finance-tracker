@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İlaç Gider</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="ilac-gider-page">
+    <!-- Header -->
+    <div class="header">
+        <div class="left">
+            {% if session.get('user_id') %}
+                <span>Hoş Geldiniz, {{ session.username }}</span>
+            {% endif %}
+        </div>
+        <div class="right">
+            {% if session.get('user_id') %}
+                <a href="/logout" class="auth-button">Çıkış Yap</a>
+            {% else %}
+                <a href="/register" class="auth-button">Kayıt Ol</a>
+                <a href="/login" class="auth-button">Giriş Yap</a>
+            {% endif %}
+            <a href="/index" class="auth-button">Anasayfa</a>
+            <button class="auth-button" onclick="goBack()">Geri</button>
+            <script>
+                function goBack() {
+                    if (document.referrer) {
+                        // Bir önceki sayfa varsa geri git
+                        window.history.back();
+                    } else {
+                        // Önceki sayfa yoksa bulunduğun sayfada kal
+                        alert("Geri dönecek bir sayfa yok!");
+                    }
+                }
+            </script>
+        </div>
+    </div>  
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <h1>İlaç Gideri</h1>
+
+        <!-- Form -->
+        <form action="/gider/ilac?season={{ season_name }}&tarla_id={{ tarla_id }}" method="POST" class="ilac-form">
+            <div class="form-group">
+                <label for="urun-tipi">İlaç Ürün Grubu:</label>
+                <select id="urun-tipi" name="urun_tipi" required>
+                    <option value="">Seçiniz...</option>
+                    <option value="Fungusit">Fungusit</option>
+                    <option value="Herbisit">Herbisit</option>
+                    <option value="İnsektisit">İnsektisit</option>
+                    <option value="Akarisitler">Akarisitler</option>
+                    <option value="Rodentisitler ">Rodentisitler </option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="marka">İlaç Markası:</label>
+                <select id="marka" name="marka" required>
+                    <option value="">Seçiniz...</option>
+                    <option value="Bayer CropScience">Bayer CropScience</option>
+                    <option value="Syngenta">Syngenta</option>
+                    <option value="BASF">BASF</option>
+                    <option value="Dow AgroSciences">Dow AgroSciences</option>
+                    <option value="Adama">Adama</option>
+                    <option value="Corteva Agriscience">Corteva Agriscience</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="toplam-miktar">Toplam Miktar:</label>
+                <div class="input-with-unit">
+                    <input type="number" id="toplam-miktar" name="toplam_miktar" step="0.01" required>
+                    <span class="unit">Kutu Miktarı</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="toplam-tutar">Toplam Tutar:</label>
+                <div class="input-with-unit">
+                    <input type="number" id="toplam-tutar" name="toplam_tutar" step="0.01" required>
+                    <span class="unit">TL</span>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button">Kaydet</button>
+        </form>
+    </div>
+</body>
+</html>

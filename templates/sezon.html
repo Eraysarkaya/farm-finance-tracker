@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ season_name }} Sezonu</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="season-page">
+    <!-- Header -->
+    <div class="header">
+        <div class="left">
+            {% if session.get('user_id') %}
+                <span>Hoş Geldiniz, {{ session.username }}</span>
+            {% endif %}
+        </div>
+        <div class="right">
+            {% if session.get('user_id') %}
+                <a href="/logout" class="auth-button">Çıkış Yap</a>
+            {% else %}
+                <a href="/register" class="auth-button">Kayıt Ol</a>
+                <a href="/login" class="auth-button">Giriş Yap</a>
+            {% endif %}
+            <a href="/index" class="auth-button">Anasayfa</a>
+            <button class="auth-button" onclick="goBack()">Geri</button>
+            <script>
+                function goBack() {
+                    if (document.referrer) {
+                        // Bir önceki sayfa varsa geri git
+                        window.history.back();
+                    } else {
+                        // Önceki sayfa yoksa bulunduğun sayfada kal
+                        alert("Geri dönecek bir sayfa yok!");
+                    }
+                }
+            </script>
+        </div>
+    </div>  
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <h1>{{ season_name }} Sezonu</h1>
+
+        <div class="section">
+            <a href="/islemler/{{ season_name }}/{{ tarla_id }}" class="action-button">Yapılan İşlemler</a>
+        </div>
+        <!-- İşlemlerim -->
+        <div class="section">
+            <h2>Gelir Ekle</h2>
+            <div class="button-group">
+                <a href="/gelir/hasat?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Hasat Satışı</a>
+                <a href="/gelir/hibe?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Hibe</a>
+                <a href="/gelir/diger?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Diğer</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Gider Ekle</h2>
+            <div class="button-group">
+                <a href="/gider/tohum?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Tohum</a>
+                <a href="/gider/gubre?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Gübre</a>
+                <a href="/gider/ilac?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">İlaç</a>
+                <a href="/gider/akaryakit?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Akaryakıt</a>
+                <a href="/gider/elektrik?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Elektrik</a>
+                <a href="/gider/iscilik?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">İşcilik</a>
+                <a href="/gider/nakliye?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Nakliyat</a>
+                <a href="/gider/kredi?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Kredi</a>
+                <a href="/gider/sigorta?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Sigorta</a>
+                <a href="/gider/tarla-kirasi?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Tarla Kirası</a>
+                <a href="/gider/bicim?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Biçim</a>
+                <a href="/gider/diger?season={{ season_name }}&tarla_id={{ tarla_id }}" class="action-button">Diğer</a>
+            </div>
+        </div>
+
+        <!-- Gelir Tablosu -->
+        <div class="table-section">
+            <div class="table-summary kar-zarar">
+                <span>Sezon Kar-Zarar:</span>
+                <span>{{ sezon_kar_zarar }} TL</span>
+            </div>
+            <h2>Gelirler</h2>
+            <div class="table-container">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Kategori</th>
+                            <th>Miktar</th>
+                            <th>TL</th>
+                            <th>Silmek</th> <!-- Silme butonları için yeni bir sütun -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for gelir in gelirler %}
+                        <tr>
+                            <td>{{ gelir[0] }}</td>
+                            <td>
+                                {% if gelir[0] == 'Hasat Satışı' %}
+                                    {{ gelir[1] }} kg
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>{{ gelir[2] }} TL</td>
+                            <td>
+                                <form action="/gelir_sil/{{ gelir[3] }}?season={{ season_name }}&tarla_id={{ tarla_id }}" method="POST">
+                                    <input type="hidden" name="season_name" value="{{ season_name }}">
+                                    <button type="submit" class="delete-button">Sil</button>
+                                </form>                                
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="table-summary">
+                    <span>Sezon Gelir:</span>
+                    <span>{{ toplam_gelir }} TL</span>
+                </div>
+            </div>
+            
+
+        <!-- Gider Tablosu -->
+        <div class="table-section">
+            <h2>Giderler</h2>
+            <div class="table-container">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Kategori</th>
+                            <th>Türü</th>
+                            <th>Miktar</th>
+                            <th>TL</th>
+                            <th>Silmek</th> <!-- Silme butonları için yeni bir sütun -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for gider in giderler %}
+                        <tr>
+                            <td>{{ gider[0] }}</td>
+                            <td>{{ gider[1] }}</td>
+                            <td>
+                                {% if gider[0] in ['Tohum', 'Gübre'] %}
+                                    {{ gider[2] }} kg
+                                {% elif gider[0] == 'İlaç' %}
+                                    {{ gider[2] }} kutu
+                                {% elif gider[0] == 'Akaryakıt' %}
+                                    {{ gider[2] }} lt
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>{{ gider[3] }} TL</td>
+                            <td>
+                                <form action="/gider_sil/{{ gider[4] }}?season={{ season_name }}&tarla_id={{ tarla_id }}" method="POST">
+                                    <input type="hidden" name="season_name" value="{{ season_name }}">
+                                    <button type="submit" class="delete-button">Sil</button>
+                                </form>                                
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="table-summary">
+                    <span>Sezon Gider:</span>
+                    <span>{{ toplam_gider }} TL</span>
+                </div>
+            </div>
+</body>
+</html>

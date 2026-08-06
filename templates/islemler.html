@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapılan İşlemler</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="islemler-page">
+    <!-- Header -->
+    <div class="header">
+        <div class="left">
+            {% if session.get('user_id') %}
+                <span>Hoş Geldiniz, {{ session.username }}</span>
+            {% endif %}
+        </div>
+        <div class="right">
+            {% if session.get('user_id') %}
+                <a href="/logout" class="auth-button">Çıkış Yap</a>
+            {% else %}
+                <a href="/register" class="auth-button">Kayıt Ol</a>
+                <a href="/login" class="auth-button">Giriş Yap</a>
+            {% endif %}
+            <a href="/index" class="auth-button">Anasayfa</a>
+            <button class="auth-button" onclick="goBack()">Geri</button>
+            <script>
+                function goBack() {
+                    if (document.referrer) {
+                        // Bir önceki sayfa varsa geri git
+                        window.history.back();
+                    } else {
+                        // Önceki sayfa yoksa bulunduğun sayfada kal
+                        alert("Geri dönecek bir sayfa yok!");
+                    }
+                }
+            </script>
+        </div>
+    </div>  
+    
+        <div class="container">
+            <h1>Yapılan İşlemler</h1>
+            <h2>{{ season_name }}</h2>
+        
+            <form action="/islemler/{{ season_name }}/{{ tarla_id }}" method="POST">
+                <ul class="checklist">
+                    <li>
+                        <label>
+                            <input type="checkbox" name="islemler_1" value="Sürüm pulluk ile toprağım ters yüz edilmesi" 
+                            {% if 'Sürüm pulluk ile toprağım ters yüz edilmesi' in islemler %}checked{% endif %} onchange="toggleAkaryakitFields(this, 'akaryakit_1')">
+                            Sürüm pulluk ile toprağım ters yüz edilmesi
+                        </label>
+                        <div id="akaryakit_1" class="akaryakit-fields" style="display: none;">
+                            <label for="akaryakit_tipi_1">Akaryakıt Ürün Grubu:</label>
+                            <select name="akaryakit_tipi_1" disabled>
+                                <option value="">Seçiniz...</option>
+                                <option value="Mazot">Mazot</option>
+                                <option value="Benzin">Benzin</option>
+                            </select>
+        
+                            <label for="toplam_miktar_1">Toplam Miktar (Litre):</label>
+                            <input type="number" name="toplam_miktar_1" step="0.01" disabled>
+        
+                            <label for="toplam_tutar_1">Toplam Tutar (TL):</label>
+                            <input type="number" name="toplam_tutar_1" step="0.01" disabled>
+                        </div>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="islemler_2" value="Diskaro yapıldı" 
+                            {% if 'Diskaro yapıldı' in islemler %}checked{% endif %} onchange="toggleAkaryakitFields(this, 'akaryakit_2')">
+                            Diskaro yapıldı
+                        </label>
+                        <div id="akaryakit_2" class="akaryakit-fields" style="display: none;">
+                            <label for="akaryakit_tipi_2">Akaryakıt Ürün Grubu:</label>
+                            <select name="akaryakit_tipi_2" disabled>
+                                <option value="">Seçiniz...</option>
+                                <option value="Mazot">Mazot</option>
+                                <option value="Benzin">Benzin</option>
+                            </select>
+        
+                            <label for="toplam_miktar_2">Toplam Miktar (Litre):</label>
+                            <input type="number" name="toplam_miktar_2" step="0.01" disabled>
+        
+                            <label for="toplam_tutar_2">Toplam Tutar (TL):</label>
+                            <input type="number" name="toplam_tutar_2" step="0.01" disabled>
+                        </div>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="islemler_3" value="Tırmıklama işlemi yapıldı" 
+                            {% if 'Tırmıklama işlemi yapıldı' in islemler %}checked{% endif %} onchange="toggleAkaryakitFields(this, 'akaryakit_3')">
+                            Tırmıklama işlemi yapıldı
+                        </label>
+                        <div id="akaryakit_3" class="akaryakit-fields" style="display: none;">
+                            <label for="akaryakit_tipi_3">Akaryakıt Ürün Grubu:</label>
+                            <select name="akaryakit_tipi_3" disabled>
+                                <option value="">Seçiniz...</option>
+                                <option value="Mazot">Mazot</option>
+                                <option value="Benzin">Benzin</option>
+                            </select>
+        
+                            <label for="toplam_miktar_3">Toplam Miktar (Litre):</label>
+                            <input type="number" name="toplam_miktar_3" step="0.01" disabled>
+        
+                            <label for="toplam_tutar_3">Toplam Tutar (TL):</label>
+                            <input type="number" name="toplam_tutar_3" step="0.01" disabled>
+                        </div>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="islemler_4" value="Kültibatör ile yüzey düzeltme"
+                            {% if 'Kültibatör ile yüzey düzeltme' in islemler %}checked{% endif %} onchange="toggleAkaryakitFields(this, 'akaryakit_4')">
+                            Kültibatör ile yüzey düzeltme
+                        </label>
+                        <div id="akaryakit_4" class="akaryakit-fields" style="display: none;">
+                            <label for="akaryakit_tipi_4">Akaryakıt Ürün Grubu:</label>
+                            <select name="akaryakit_tipi_4" disabled>
+                                <option value="">Seçiniz...</option>
+                                <option value="Mazot">Mazot</option>
+                                <option value="Benzin">Benzin</option>
+                            </select>
+        
+                            <label for="toplam_miktar_4">Toplam Miktar (Litre):</label>
+                            <input type="number" name="toplam_miktar_4" step="0.01" disabled>
+        
+                            <label for="toplam_tutar_4">Toplam Tutar (TL):</label>
+                            <input type="number" name="toplam_tutar_4" step="0.01" disabled>
+                        </div>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="islemler_5" value="Lazer tesviye ile tarla yüzeyi düzleme işlemi"
+                            {% if 'Lazer tesviye ile tarla yüzeyi düzleme işlemi' in islemler %}checked{% endif %} onchange="toggleAkaryakitFields(this, 'akaryakit_5')">
+                            Lazer tesviye ile tarla yüzeyi düzleme işlemi
+                        </label>
+                        <div id="akaryakit_5" class="akaryakit-fields" style="display: none;">
+                            <label for="akaryakit_tipi_5">Akaryakıt Ürün Grubu:</label>
+                            <select name="akaryakit_tipi_5" disabled>
+                                <option value="">Seçiniz...</option>
+                                <option value="Mazot">Mazot</option>
+                                <option value="Benzin">Benzin</option>
+                            </select>
+        
+                            <label for="toplam_miktar_5">Toplam Miktar (Litre):</label>
+                            <input type="number" name="toplam_miktar_5" step="0.01" disabled>
+        
+                            <label for="toplam_tutar_5">Toplam Tutar (TL):</label>
+                            <input type="number" name="toplam_tutar_5" step="0.01" disabled>
+                        </div>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="islemler_6" value="Ekin öncesi katı gübreleme işlemi"
+                            {% if 'Ekin öncesi katı gübreleme işlemi' in islemler %}checked{% endif %} onchange="toggleAkaryakitFields(this, 'akaryakit_6')">
+                            Ekin öncesi katı gübreleme işlemi
+                        </label>
+                        <div id="akaryakit_6" class="akaryakit-fields" style="display: none;">
+                            <label for="akaryakit_tipi_6">Akaryakıt Ürün Grubu:</label>
+                            <select name="akaryakit_tipi_6" disabled>
+                                <option value="">Seçiniz...</option>
+                                <option value="Mazot">Mazot</option>
+                                <option value="Benzin">Benzin</option>
+                            </select>
+        
+                            <label for="toplam_miktar_6">Toplam Miktar (Litre):</label>
+                            <input type="number" name="toplam_miktar_6" step="0.01" disabled>
+        
+                            <label for="toplam_tutar_6">Toplam Tutar (TL):</label>
+                            <input type="number" name="toplam_tutar_6" step="0.01" disabled>
+                        </div>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="islemler_7" value="Ekim öncesi merdane işlemi veya çabalama işlemi"
+                            {% if 'Ekim öncesi merdane işlemi veya çabalama işlemi' in islemler %}checked{% endif %} onchange="toggleAkaryakitFields(this, 'akaryakit_7')">
+                            Ekim öncesi merdane işlemi veya çabalama işlemi
+                        </label>
+                        <div id="akaryakit_7" class="akaryakit-fields" style="display: none;">
+                            <label for="akaryakit_tipi_7">Akaryakıt Ürün Grubu:</label>
+                            <select name="akaryakit_tipi_7" disabled>
+                                <option value="">Seçiniz...</option>
+                                <option value="Mazot">Mazot</option>
+                                <option value="Benzin">Benzin</option>
+                            </select>
+        
+                            <label for="toplam_miktar_7">Toplam Miktar (Litre):</label>
+                            <input type="number" name="toplam_miktar_7" step="0.01" disabled>
+        
+                            <label for="toplam_tutar_7">Toplam Tutar (TL):</label>
+                            <input type="number" name="toplam_tutar_7" step="0.01" disabled>
+                        </div>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="islemler_8" value="Mibzer ile Ekim işlemi"
+                            {% if 'Mibzer ile Ekim işlemi' in islemler %}checked{% endif %} onchange="toggleAkaryakitFields(this, 'akaryakit_8')">
+                            Mibzer ile Ekim işlemi
+                        </label>
+                        <div id="akaryakit_8" class="akaryakit-fields" style="display: none;">
+                            <label for="akaryakit_tipi_8">Akaryakıt Ürün Grubu:</label>
+                            <select name="akaryakit_tipi_8" disabled>
+                                <option value="">Seçiniz...</option>
+                                <option value="Mazot">Mazot</option>
+                                <option value="Benzin">Benzin</option>
+                            </select>
+        
+                            <label for="toplam_miktar_8">Toplam Miktar (Litre):</label>
+                            <input type="number" name="toplam_miktar_8" step="0.01" disabled>
+        
+                            <label for="toplam_tutar_8">Toplam Tutar (TL):</label>
+                            <input type="number" name="toplam_tutar_8" step="0.01" disabled>
+                        </div>
+                    </li>
+                </ul>
+                <button type="submit" class="submit-button">Kaydet</button>
+            </form>
+        </div>
+        <script>
+            function toggleAkaryakitFields(checkbox, fieldsId) {
+                const fieldsContainer = document.getElementById(fieldsId);
+                const inputs = fieldsContainer.querySelectorAll('input, select');
+        
+                if (checkbox.checked) {
+                    fieldsContainer.style.display = 'block';
+                    inputs.forEach(input => input.disabled = false);
+                } else {
+                    fieldsContainer.style.display = 'none';
+                    inputs.forEach(input => input.disabled = true);
+                }
+            }
+        </script> 
+</body>
+</html>

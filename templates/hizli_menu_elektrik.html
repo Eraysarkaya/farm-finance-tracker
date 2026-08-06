@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hızlı Menü - Elektrik</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="left">
+            {% if session.get('user_id') %}
+                <span>Hoş Geldiniz, {{ session.username }}</span>
+            {% endif %}
+        </div>
+        <div class="right">
+            {% if session.get('user_id') %}
+                <a href="/logout" class="auth-button">Çıkış Yap</a>
+            {% else %}
+                <a href="/register" class="auth-button">Kayıt Ol</a>
+                <a href="/login" class="auth-button">Giriş Yap</a>
+            {% endif %}
+            <a href="/index" class="auth-button">Anasayfa</a>
+            <button class="auth-button" onclick="goBack()">Geri</button>
+            <script>
+                function goBack() {
+                    if (document.referrer) {
+                        // Bir önceki sayfa varsa geri git
+                        window.history.back();
+                    } else {
+                        // Önceki sayfa yoksa bulunduğun sayfada kal
+                        alert("Geri dönecek bir sayfa yok!");
+                    }
+                }
+            </script>
+        </div>
+    </div>  
+
+    <div class="hizli-menu-container">
+        <div class="hizli-menu-box">
+            <form action="/hizli_menu_elektrik" method="POST">
+                <div class="hizli-menu-form-group">
+                    <h1 class="hizli-menu-title">Elektrik Hızlı Menü</h1>
+                    <label for="tarla_sec" class="hizli-menu-label">Tarla Seç:</label>
+                    <select name="tarla_id" id="tarla_sec" class="hizli-menu-select" required>
+                        {% for tarla in tarlalar %}
+                            <option value="{{ tarla[0] }}">{{ tarla[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="hizli-menu-form-group">
+                    <label for="sezon_sec" class="hizli-menu-label">Sezon Seç:</label>
+                    <select name="season_name" id="sezon_sec" class="hizli-menu-select" required>
+                        {% for sezon in sezonlar %}
+                            <option value="{{ sezon[0] }}">{{ sezon[0] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="hizli-menu-action-button">Sonraki</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

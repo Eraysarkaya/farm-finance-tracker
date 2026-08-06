@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarla Menü</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="menu-page">
+    <div class="header">
+        <div class="left">
+            {% if session.get('user_id') %}
+                <span>Hoş Geldiniz, {{ session.username }}</span>
+            {% endif %}
+        </div>
+        <div class="right">
+            {% if session.get('user_id') %}
+                <a href="/logout" class="auth-button">Çıkış Yap</a>
+            {% else %}
+                <a href="/register" class="auth-button">Kayıt Ol</a>
+                <a href="/login" class="auth-button">Giriş Yap</a>
+            {% endif %}
+            <a href="/index" class="auth-button">Anasayfa</a>
+            <button class="auth-button" onclick="goBack()">Geri</button>
+            <script>
+                function goBack() {
+                    if (document.referrer) {
+                        // Bir önceki sayfa varsa geri git
+                        window.history.back();
+                    } else {
+                        // Önceki sayfa yoksa bulunduğun sayfada kal
+                        alert("Geri dönecek bir sayfa yok!");
+                    }
+                }
+            </script>
+        </div>
+    </div>  
+     
+    <div class="main-container">
+        <div class="menu-container">
+            <div class="menu-header">
+                <h1>Tarla Menü</h1>
+                <form action="/tarla" method="POST"></form>
+                <a href="/tarla_ekle" class="auth-button">Tarla Ekle</a>
+            </div>
+            <div class="summary">
+                <p><strong>Toplam Tarla Sayısı:</strong> {{ summary.total_fields }}</p>
+                <p><strong>Toplam Gelir:</strong> {{ summary.total_income }}</p>
+                <p><strong>Toplam Gider:</strong> {{ summary.total_expenses }}</p>
+                <p><strong>Toplam Kar-Zarar:</strong> {{ summary.total_profit_loss }}</p>
+            </div>
+            {% for tarla in tarla_sezon_detaylari %}
+<div class="tarla-sezon-tablo">
+    <div class="table-container">
+        <div class="table-header">{{ tarla.tarla[1] }} Sezon Tablosu</div>
+        <div class="table-section">
+            {% for sezon in tarla.sezonlar %}
+            <div>
+                <h3>Sezon {{ sezon.season_name }}</h3>
+                <table class="table-content">
+                    <thead>
+                        <!-- Gelirler -->
+                        <tr>
+                            <th colspan="4" class="table-header">Sezon Gelir: {{ sezon.sezon_gelir }} TL</th>
+                        </tr>
+                        <tr>
+                            <th>Kategori</th>
+                            <th colspan="2">Miktar</th>
+                            <th>TL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for gelir in sezon.gelirler %}
+                        <tr>
+                            <td>{{ gelir[0] }}</td>
+                            <td colspan="2">
+                                {% if gelir[0] == 'Hasat Satışı' %}
+                                    {{ gelir[1] }} kg
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>{{ gelir[2] }} TL</td>
+                        </tr>
+                        {% endfor %}
+                        <!-- Giderler -->
+                        <tr>
+                            <th colspan="4">Sezon Gider: {{ sezon.sezon_gider }} TL</th>
+                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>Türü</th>
+                                <th>Miktar</th>
+                                <th>TL</th>
+                            </tr>
+                        </thead>
+                        {% for gider in sezon.giderler %}
+                        <tr>
+                            <td>{{ gider[0] }}</td>
+                            <td>{{ gider[1] }}</td>
+                            <td>
+                                {% if gider[0] in ['Tohum', 'Gübre'] %}
+                                    {{ gider[2] }} kg
+                                {% elif gider[0] == 'İlaç' %}
+                                    {{ gider[2] }} kutu
+                                {% elif gider[0] == 'Akaryakıt' %}
+                                    {{ gider[2] }} lt
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>{{ gider[3] }} TL</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4">Sezon Kar-Zarar: {{ sezon.sezon_kar_zarar }} TL</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+            <div class="fields-list">
+                <h1>Tarlalarım</h1>
+                {% for tarla in tarlalar %}
+                <div class="field-item">
+                    <!-- Tıklanabilir buton -->
+                    <a href="/tarla/{{ tarla[0] }}" class="field-button">
+                        <div>
+                            <p><strong>Tarla Adı:</strong> {{ tarla[1] }}</p>
+                            <p><strong>Tarla m²:</strong> {{ tarla[2] }}</p>
+                            <p><strong>Parsel No:</strong> {{ tarla[3] }}</p>
+                        </div>
+                    </a>
+                    <!-- Silme Butonu -->
+                    <form action="/tarla_sil/{{ tarla[0] }}" method="POST" style="margin-left: auto;">
+                        <button type="submit" class="delete-button">Sil</button>
+                    </form>                    
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

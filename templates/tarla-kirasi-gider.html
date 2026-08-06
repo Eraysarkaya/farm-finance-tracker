@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarla Kirası Gider</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="tarla-kirasi-gider-page">
+    <!-- Header -->
+    <div class="header">
+        <div class="left">
+            {% if session.get('user_id') %}
+                <span>Hoş Geldiniz, {{ session.username }}</span>
+            {% endif %}
+        </div>
+        <div class="right">
+            {% if session.get('user_id') %}
+                <a href="/logout" class="auth-button">Çıkış Yap</a>
+            {% else %}
+                <a href="/register" class="auth-button">Kayıt Ol</a>
+                <a href="/login" class="auth-button">Giriş Yap</a>
+            {% endif %}
+            <a href="/index" class="auth-button">Anasayfa</a>
+            <button class="auth-button" onclick="goBack()">Geri</button>
+            <script>
+                function goBack() {
+                    if (document.referrer) {
+                        // Bir önceki sayfa varsa geri git
+                        window.history.back();
+                    } else {
+                        // Önceki sayfa yoksa bulunduğun sayfada kal
+                        alert("Geri dönecek bir sayfa yok!");
+                    }
+                }
+            </script>
+        </div>
+    </div>  
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <h1>Tarla Kirası Gideri</h1>
+
+        <!-- Form -->
+        <form action="/gider/tarla-kirasi?season={{ season_name }}&tarla_id={{ tarla_id }}" method="POST" class="tarla-kirasi-form">
+            <div class="form-group">
+                <label for="toplam-tutar">Toplam Tutar (TL):</label>
+                <div class="input-with-unit">
+                    <input type="number" id="toplam-tutar" name="toplam_tutar" step="0.01" required>
+                    <span class="unit">TL</span>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button">Kaydet</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tohum Gider</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="tohum-gider-page">
+    <!-- Header -->
+    <div class="header">
+        <div class="left">
+            {% if session.get('user_id') %}
+                <span>Hoş Geldiniz, {{ session.username }}</span>
+            {% endif %}
+        </div>
+        <div class="right">
+            {% if session.get('user_id') %}
+                <a href="/logout" class="auth-button">Çıkış Yap</a>
+            {% else %}
+                <a href="/register" class="auth-button">Kayıt Ol</a>
+                <a href="/login" class="auth-button">Giriş Yap</a>
+            {% endif %}
+            <a href="/index" class="auth-button">Anasayfa</a>
+            <button class="auth-button" onclick="goBack()">Geri</button>
+            <script>
+                function goBack() {
+                    if (document.referrer) {
+                        // Bir önceki sayfa varsa geri git
+                        window.history.back();
+                    } else {
+                        // Önceki sayfa yoksa bulunduğun sayfada kal
+                        alert("Geri dönecek bir sayfa yok!");
+                    }
+                }
+            </script>
+        </div>
+    </div>  
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <h1>Tohum Gideri</h1>
+
+        <!-- Form -->
+        <form action="/gider/tohum?season={{ season_name }}&tarla_id={{ tarla_id }}" method="POST" class="tohum-form">
+            <div class="form-group">
+                <label for="tohum-secimi">Tohum Ürün Grubu:</label>
+                <select id="tohum-secimi" name="tohum_secimi" required>
+                    <option value="">Seçiniz...</option>
+                    <option value="Buğday">Buğday</option>
+                    <option value="Mısır">Mısır</option>
+                    <option value="Arpa">Arpa</option>
+                    <option value="Fasülye">Fasülye</option>
+                    <option value="Ayçiçeği">Ayçiçeği</option>
+                    <option value="Biber">Biber</option>
+                    <option value="Lahana">Lahana</option>
+                    <option value="Soya Fasülyesi">Soya Fasülyesi</option>
+                    <option value="Tütün">Tütün</option>
+                    <option value="Domates">Domates</option>
+                    <option value="Patates">Patates</option>
+                    <option value="Soğan">Soğan</option>
+                </select>
+            </div>
+        
+            <div class="form-group">
+                <label for="tohum-marka">Tohum Markası:</label>
+                <select id="tohum-marka" name="tohum_marka" required>
+                    <option value="">Seçiniz...</option>
+                    <option value="May Tohum">May Tohum</option>
+                    <option value="Yüksel Tohum">Yüksel Tohum</option>
+                    <option value="Agromar Tohum">Agromar Tohum</option>
+                    <option value="Beta Tohum">Beta Tohum</option>
+                    <option value="Toros Tohum">Toros Tohum</option>
+                    <option value="Pioneer Tohum">Pioneer Tohum</option>
+                    <option value="Syngenta Tohum">Syngenta Tohum</option>
+                    <option value="Limagrain Tohum">Limagrain Tohum</option>
+                    <option value="Bayer CropScience">Bayer CropScience</option>
+                    <option value="Hektaş Tohum">Hektaş Tohum</option>
+                </select>
+            </div>
+        
+            <div class="form-group">
+                <label for="toplam-miktar">Toplam Miktar:</label>
+                <div class="input-with-unit">
+                    <input type="number" id="toplam-miktar" name="toplam_miktar" step="0.01" required>
+                    <span class="unit">kg</span>
+                </div>
+            </div>
+        
+            <div class="form-group">
+                <label for="toplam-tutar">Toplam Tutar:</label>
+                <div class="input-with-unit">
+                    <input type="number" id="toplam-tutar" name="toplam_tutar" step="0.01" required>
+                    <span class="unit">TL</span>
+                </div>
+            </div>
+        
+            <button type="submit" class="submit-button">Kaydet</button>
+        </form>       
+    </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gübre Gider</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="gubre-gider-page">
+    <!-- Header -->
+    <div class="header">
+        <div class="left">
+            {% if session.get('user_id') %}
+                <span>Hoş Geldiniz, {{ session.username }}</span>
+            {% endif %}
+        </div>
+        <div class="right">
+            {% if session.get('user_id') %}
+                <a href="/logout" class="auth-button">Çıkış Yap</a>
+            {% else %}
+                <a href="/register" class="auth-button">Kayıt Ol</a>
+                <a href="/login" class="auth-button">Giriş Yap</a>
+            {% endif %}
+            <a href="/index" class="auth-button">Anasayfa</a>
+            <button class="auth-button" onclick="goBack()">Geri</button>
+            <script>
+                function goBack() {
+                    if (document.referrer) {
+                        // Bir önceki sayfa varsa geri git
+                        window.history.back();
+                    } else {
+                        // Önceki sayfa yoksa bulunduğun sayfada kal
+                        alert("Geri dönecek bir sayfa yok!");
+                    }
+                }
+            </script>
+        </div>
+    </div>  
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <h1>Gübre Gideri</h1>
+
+        <!-- Form -->
+        <form action="/gider/gubre?season={{ season_name }}&tarla_id={{ tarla_id }}" method="POST" class="gubre-form">
+            <div class="form-group">
+                <label for="urun-grubu">Gübre Ürün Grubu:</label>
+                <select id="urun-grubu" name="urun_grubu" required>
+                    <option value="">Seçiniz...</option>
+                    <option value="Azotlu Gübre">Azotlu Gübre</option>
+                    <option value="Fosforlu Gübre">Fosforlu Gübre</option>
+                    <option value="Potasyumlu Gübre">Potasyumlu Gübre</option>
+                    <option value="Hayvansal Gübre">Hayvansal Gübre</option>
+                    <option value="Üre">Üre</option>
+                    <option value="Yaprak Gübre">Yaprak Gübre</option>
+                    <option value="Sıvı Gübre">Sıvı Gübre</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="marka">Gübre Markası:</label>
+                <select id="marka" name="marka" required>
+                    <option value="">Seçiniz...</option>
+                    <option value="Gübretaş">Gübretaş</option>
+                    <option value="Toros Tarım">Toros Tarım</option>
+                    <option value="Ege Gübre">Ege Gübre</option>
+                    <option value="Bagfaş">Bagfaş</option>
+                    <option value="İgsaş">İgsaş</option>
+                    <option value="Eti Gübre">Eti Gübre</option>
+                    <option value="Akdeniz Gübre">Akdeniz Gübre</option>
+                    <option value="Tekfen Tarım">Tekfen Tarım</option>
+                    <option value="Yara">Yara</option>
+                    <option value="Haifa">Haifa</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="toplam-miktar">Toplam Miktar:</label>
+                <div class="input-with-unit">
+                    <input type="number" id="toplam-miktar" name="toplam_miktar" step="0.01" required>
+                    <span class="unit">kg</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="toplam-tutar">Toplam Tutar:</label>
+                <div class="input-with-unit">
+                    <input type="number" id="toplam-tutar" name="toplam_tutar" step="0.01" required>
+                    <span class="unit">TL</span>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button">Kaydet</button>
+        </form>
+    </div>
+</body>
+</html>

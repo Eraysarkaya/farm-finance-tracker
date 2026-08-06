@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarla Ekle</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="field-page">
+    <div class="header">
+        <div class="left">
+            {% if session.get('user_id') %}
+                <span>Hoş Geldiniz, {{ session.username }}</span>
+            {% endif %}
+        </div>
+        <div class="right">
+            {% if session.get('user_id') %}
+                <a href="/logout" class="auth-button">Çıkış Yap</a>
+            {% else %}
+                <a href="/register" class="auth-button">Kayıt Ol</a>
+                <a href="/login" class="auth-button">Giriş Yap</a>
+            {% endif %}
+            <a href="/index" class="auth-button">Anasayfa</a>
+            <button class="auth-button" onclick="goBack()">Geri</button>
+            <script>
+                function goBack() {
+                    if (document.referrer) {
+                        // Bir önceki sayfa varsa geri git
+                        window.history.back();
+                    } else {
+                        // Önceki sayfa yoksa bulunduğun sayfada kal
+                        alert("Geri dönecek bir sayfa yok!");
+                    }
+                }
+            </script>
+        </div>
+    </div>  
+    
+    </div>   
+    <div class="main-container">
+        <div class="form-container">
+            <h1 class="hizli-menu-title">Tarla Ekle</h1>
+            <form action="/tarla_ekle" method="POST">
+                <div class="form-group">
+                    <label for="field-name">Tarla Adı:</label>
+                    <input type="text" id="field-name" name="field_name" placeholder="Tarla Adını Giriniz" required>
+                </div>
+                <div class="form-group">
+                    <label for="field-size">Tarla m²:</label>
+                    <input type="number" id="field-size" name="field_size" placeholder="Tarla Alanı" required>
+                </div>
+                <div class="form-group">
+                    <label for="parcel-no">Parsel No:</label>
+                    <input type="text" id="parcel-no" name="parcel_no" placeholder="Parsel Numarası" required>
+                </div>
+                <button type="submit" class="btn">Ekle</button>
+            </form>            
+        </div>
+    </div>
+</body>
+</html>

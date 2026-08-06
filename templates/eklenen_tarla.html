@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eklenen Tarla</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="field-detail-page">
+            <div class="header">
+                        <div class="left">
+                            {% if session.get('user_id') %}
+                                <span>Hoş Geldiniz, {{ session.username }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="right">
+                            {% if session.get('user_id') %}
+                                <a href="/logout" class="auth-button">Çıkış Yap</a>
+                            {% else %}
+                                <a href="/register" class="auth-button">Kayıt Ol</a>
+                                <a href="/login" class="auth-button">Giriş Yap</a>
+                            {% endif %}
+                            <a href="/index" class="auth-button">Anasayfa</a>
+                            <button class="auth-button" onclick="goBack()">Geri</button>
+                            <script>
+                                function goBack() {
+                                    if (document.referrer) {
+                                        // Bir önceki sayfa varsa geri git
+                                        window.history.back();
+                                    } else {
+                                        // Önceki sayfa yoksa bulunduğun sayfada kal
+                                        alert("Geri dönecek bir sayfa yok!");
+                                    }
+                                }
+                            </script>
+                        </div>
+                    </div>                    
+    <div class="main-container">
+        <div class="field-container">
+            <div class="field-header">
+
+                <h1>{{ tarla.name }}</h1>
+                <form action="/eklenen_tarla" method="POST"></form>
+            </div>
+            <div class="season-section">
+                {% for season in season_details %}
+                <div class="season-summary">
+                    <h3>{{ season.season_name }} Sezon Verileri</h3>
+                    <div class="stat">
+                        <label>Sezon Gelir:</label>
+                        <span>{{ season.income }} TL</span>
+                    </div>
+                    <div class="stat">
+                        <label>Sezon Gider:</label>
+                        <span>{{ season.expenses }} TL</span>
+                    </div>
+                    <div class="stat">
+                        <label>Sezon Kar-Zarar:</label>
+                        <span>{{ season.profit_loss }} TL</span>
+                    </div>
+                    <!-- <a href="/season/{{ season.season_name }}?tarla_id={{ tarla.id }}" class="season-button">Detayları Gör</a> -->
+                </div>
+                {% endfor %}
+            </div>
+            
+                             
+            <div class="season-section">
+                <h2>Sezonlar</h2>
+                <div class="season-buttons">
+                    <a href="/season/2024-2025?tarla_id={{ tarla.id }}" class="season-button">2024-2025 Sezonu</a>
+                    <a href="/season/2025-2026?tarla_id={{ tarla.id }}" class="season-button">2025-2026 Sezonu</a>
+                    <a href="/season/2026-2027?tarla_id={{ tarla.id }}" class="season-button">2026-2027 Sezonu</a>
+                </div>
+            </div>
+            
+            <div class="verimlilik-section">
+                <h2>Tarla Verimliliği Grafiği</h2>
+                <canvas id="verimlilikChart"></canvas>
+                    <div class="season-summary">
+                        <ul>
+                            {% for season in season_details %}
+                            <li>
+                                <strong>{{ season.season_name }}:</strong>
+                                Hasat: {{ season.hasat_satisi }} kg
+                                {% if season.verimlilik_orani is not none %}
+                                    | Verimlilik Değişimi: {{ season.verimlilik_orani }}%
+                                {% else %}
+                                    | Verimlilik Değişimi: İlk Sezon
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="overall-verimlilik">
+                            <h3>Tarla Toplam Verimlilik Oranı:</h3>
+                            {% if tarla.toplam_verimlilik_orani is not none %}
+                                <p>{{ tarla.toplam_verimlilik_orani }}%</p>
+                            {% else %}
+                                <p>Veri yetersiz. Toplam verimlilik hesaplanamıyor.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                const ctx = document.getElementById('verimlilikChart').getContext('2d');
+                const verimlilikData = {{ season_details | tojson }};
+                const labels = verimlilikData.map(item => item.season_name);
+                const data = verimlilikData.map(item => item.hasat_satisi);
+            
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Hasat Miktarı (kg)',
+                            data: data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: true },
+                            tooltip: { enabled: true }
+                        },
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            </script>
+
+        </div>
+    </div>
+</body>
+</html>
