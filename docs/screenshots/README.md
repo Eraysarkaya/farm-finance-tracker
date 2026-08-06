@@ -1,9 +1,9 @@
 # Screenshots
 
-Add three privacy-safe PNG files from the running application here:
+Privacy-safe screenshots captured with a fictional demo account:
 
 - `01-field-summary.png`
-- `02-season-details.png`
+- `02-field-details.png`
 - `03-new-entry.png`
 
 Use fictional field names, parcel numbers, and financial values.

@@ -38,7 +38,11 @@ Tests cover clean database initialization, password hashing, login, password val
 
 ## Screenshots
 
-The privacy-safe screenshot checklist and expected filenames are documented in `docs/screenshots/README.md`.
+![Field summary](docs/screenshots/01-field-summary.png)
+
+![Field details](docs/screenshots/02-field-details.png)
+
+![New entry](docs/screenshots/03-new-entry.png)
 
 ## Security
 
