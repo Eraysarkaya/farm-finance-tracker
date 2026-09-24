@@ -1,6 +1,8 @@
 # Farm Finance Tracker
 
-Çiftçilerin farklı tarlalara ait gelir ve giderleri sezonlara göre kaydedip hangi tarladan ne kadar kâr veya zarar ettiklerini görebilmeleri için geliştirilmiş web uygulaması. Flask ve SQLite kullanan bu öğrenme projesinde her kullanıcı yalnız kendi tarla kayıtlarını yönetir.
+Tarlaların gelir, gider ve kâr durumunu sezon bazında takip etmeye yarayan web uygulaması.
+
+Tarla ve sezon bazında tarımsal gelir, gider ve kâr/zarar takibi yapan Flask uygulaması. Birden fazla tarlanın kayıtlarını tek hesapta yönetmeye yönelik bir öğrenme projesidir.
 
 ## Özellikler
 
