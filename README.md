@@ -1,6 +1,6 @@
 # Farm Finance Tracker
 
-A Flask and SQLite application for tracking fields, seasons, farming operations, income, expenses, and profit/loss. The project turns common farm bookkeeping workflows into a simple web dashboard.
+A Flask and SQLite learning project for tracking fields, seasons, farming operations, income, expenses and profit/loss in a simple dashboard.
 
 ## Features
 
@@ -51,9 +51,9 @@ Tests cover clean database initialization, password hashing, login, password val
 - The Flask session key comes from `FLASK_SECRET_KEY`.
 - Runtime databases are ignored and must not be published.
 
-## Portfolio status
+## Project status
 
-The current version preserves the original coursework interface while hardening authentication and installation. A future version can consolidate the repeated category routes into reusable blueprints and services.
+The interface comes from the original coursework project. Authentication and installation were improved later; the category routes still have repeated logic.
 
 ## License
 
